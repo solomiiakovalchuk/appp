@@ -2,9 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\ConnectedAccount;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use JoelButcher\Socialstream\Providers;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -40,5 +43,25 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Indicate that the user should have a connected account for the given provider.
+     */
+    public function withConnectedAccount(string $provider, ?callable $callback = null): static
+    {
+        if (! Providers::enabled($provider)) {
+            return $this->state([]);
+        }
+
+        return $this->has(
+            ConnectedAccount::factory()
+                ->state(fn (array $attributes, User $user) => [
+                    'provider' => $provider,
+                    'user_id' => $user->id,
+                ])
+                ->when(is_callable($callback), $callback),
+            'ownedTeams'
+        );
     }
 }
