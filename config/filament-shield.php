@@ -24,9 +24,11 @@ return [
         'intercept_gate' => 'before', // after
     ],
 
-    'panel_user' => [
+    'moderator' => [
         'enabled' => true,
-        'name' => 'panel_user',
+        'name' => 'moderator',
+        'define_via_gate' => false,
+        'intercept_gate' => 'before', // after
     ],
 
     'permission_prefixes' => [

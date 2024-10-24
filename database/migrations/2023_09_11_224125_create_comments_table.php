@@ -25,7 +25,7 @@ return new class extends Migration
 
                 $table->longText('comment');
 
-                $table->boolean('is_active')->default(1)->nullable();
+                $table->boolean('status')->default(1)->nullable();
 
                 $table->timestamps();
             });

@@ -75,4 +75,6 @@ class PostsRelationManager extends RelationManager
                 ]),
             ]);
     }
+
+    protected static bool $isLazy = false;
 }

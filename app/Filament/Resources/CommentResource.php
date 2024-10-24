@@ -10,9 +10,12 @@ use App\Models\Post;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -23,8 +26,9 @@ class CommentResource extends Resource
     protected static ?string $navigationLabel = 'Comments';
     protected static ?string $pluralLabel = 'Comments';
     protected static ?string $label = 'Comment';
-    protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static ?string $navigationGroup = 'Blog';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -42,10 +46,11 @@ class CommentResource extends Resource
                     ->options(Post::all()->pluck('title', 'id'))
                     ->searchable()
                     ->required(),
-                Forms\Components\Textarea::make('comment')
+                Textarea::make('comment')
                     ->required()
+                    ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_active'),
+                Toggle::make('status'),
             ]);
     }
 
@@ -53,31 +58,37 @@ class CommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
+                Tables\Columns\ImageColumn::make('user')
+                    ->label('User'),
+                Tables\Columns\TextColumn::make('post.title')
                     ->numeric()
+                    ->limit(20)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('post_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('comment')
+                    ->searchable()
+                    ->limit(20),
+                Tables\Columns\ToggleColumn::make('status')
+                    ->beforeStateUpdated(function ($record, $state) {
+                        $record->status = $state;
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

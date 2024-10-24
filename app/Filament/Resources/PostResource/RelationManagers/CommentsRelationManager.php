@@ -76,4 +76,6 @@ class CommentsRelationManager extends RelationManager
                 ]),
             ]);
     }
+
+    protected static bool $isLazy = false;
 }

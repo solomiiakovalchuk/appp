@@ -23,7 +23,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasAnyRole(['moderator', 'super_admin', 'panel_user']);
+        return $this->hasAnyRole(['moderator', 'super_admin']);
     }
 
     protected $fillable = [
@@ -55,4 +55,10 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
+    public function canComment(): bool
+    {
+        // your conditional logic here
+        return true;
+    }
+
 }
