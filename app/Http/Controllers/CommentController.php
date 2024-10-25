@@ -1,25 +1,27 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Post $post)
+    public function store(Request $request)
     {
         $request->validate([
-            'comment' => 'required|min:3|max:500',
+            'message' => 'required|string|max:500',
+            'post_id' => 'required|exists:posts,id', // Ensure to validate post_id
         ]);
 
-        $post->comments()->create([
-            'comment' => $request->comment,
-            'user_id' => $request->user()->id,
-            'approved' => false,
+        $comment = Comment::create([
+            'user_id' => Auth::id(), // Assuming the user is logged in
+            'post_id' => $request->post_id,
+            'comment' => $request->message,
+            'status' => true, // Assuming comments are active by default
         ]);
 
-        return redirect()
-            ->route('filamentblog.post.show', $post)
-            ->with('success', 'Comment submitted for approval.');
+        return response()->json($comment);
     }
 }

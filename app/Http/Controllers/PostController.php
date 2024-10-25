@@ -11,7 +11,7 @@ class PostController extends Controller
         $posts = Post::query()->with(['categories', 'user', 'tags'])
             ->paginate(10);
 
-        return response()->json([
+        return view('posts.index', [
             'posts' => $posts,
         ]);
     }
@@ -48,9 +48,14 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post->load(['user', 'categories', 'tags', 'comments' => fn ($query) => $query->approved(), 'comments.user']);
-
-        return response()->json([
+        $post->load([
+            'user',
+            'categories',
+            'tags',
+            'comments' => fn($query) => $query->where('status', true),
+            'comments.user'
+        ]);
+        return view('posts.show', [
             'post' => $post,
         ]);
     }
