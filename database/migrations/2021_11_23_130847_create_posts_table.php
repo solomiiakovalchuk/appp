@@ -24,8 +24,8 @@ return new class extends Migration
             $table->enum('status', ['published', 'scheduled', 'pending'])->default('pending');
             $table->dateTime('published_at')->nullable();
             $table->dateTime('scheduled_for')->nullable();
-            $table->string('cover_photo_path');
-            $table->string('photo_alt_text');
+            $table->string('cover_photo_path')->nullable();
+            $table->string('photo_alt_text')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->double('likes')->default(0);
 

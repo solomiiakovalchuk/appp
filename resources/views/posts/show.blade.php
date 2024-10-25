@@ -1,6 +1,10 @@
 @extends('layouts.main')
 
 @section('content')
+    <div id="comment-alert" class="alert alert-success alert-dismissible fade show position-fixed" role="alert" style="display: none; top: 120px; right:10px; z-index: 100000; max-width: 90%;">
+        Comment created successfully!
+    </div>
+
     <section class="blog-posts grid-system">
       <div class="container">
         <div class="row">

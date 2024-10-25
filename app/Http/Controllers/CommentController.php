@@ -10,18 +10,30 @@ class CommentController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'message' => 'required|string|max:500',
-            'post_id' => 'required|exists:posts,id', // Ensure to validate post_id
+            'post_id' => 'required|exists:posts,id',
         ]);
 
-        $comment = Comment::create([
-            'user_id' => Auth::id(), // Assuming the user is logged in
-            'post_id' => $request->post_id,
-            'comment' => $request->message,
-            'status' => true, // Assuming comments are active by default
-        ]);
+        $comment = new Comment();
+        $comment->comment = $validatedData['message'];
+        $comment->post_id = $validatedData['post_id'];
+        $comment->user_id = Auth::id();
+        $comment->status = true; // Позначити коментар як активний, якщо це необхідно
+        $comment->save();
 
-        return response()->json($comment);
+        // Відповідь JSON для AJAX-запиту
+        return response()->json([
+            'success' => true,
+            'message' => 'Comment created successfully.',
+            'comment' => [
+                'message' => $comment->comment,
+                'created_at' => $comment->created_at->format('M d, Y'),
+            ],
+            'user' => [
+                'name' => Auth::user()->name,
+            ]
+        ]);
     }
+
 }

@@ -27,7 +27,7 @@ class CommentResource extends Resource
     protected static ?string $pluralLabel = 'Comments';
     protected static ?string $label = 'Comment';
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
-    protected static ?string $navigationGroup = 'Blog';
+    protected static ?string $navigationGroup = 'News';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -58,8 +58,9 @@ class CommentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('user')
-                    ->label('User'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->limit(20)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('post.title')
                     ->numeric()
                     ->limit(20)

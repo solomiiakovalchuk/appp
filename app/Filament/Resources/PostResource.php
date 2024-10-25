@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,12 +28,13 @@ use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Support\Str;
 class PostResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Post::class;
-    protected static ?string $navigationLabel = 'Posts';
-    protected static ?string $pluralLabel = 'Posts';
+    protected static ?string $navigationLabel = 'News';
+    protected static ?string $pluralLabel = 'News';
 
-    protected static ?string $label = 'Post';
-    protected static ?string $navigationGroup = 'Blog';
+    protected static ?string $label = 'News';
+    protected static ?string $navigationGroup = 'News';
 
     protected static ?string $recordTitleAttribute = 'title';
 
@@ -146,6 +148,9 @@ class PostResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                Tables\Actions\LocaleSwitcher::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

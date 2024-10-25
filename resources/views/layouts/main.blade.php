@@ -51,9 +51,18 @@
               <li class="nav-item">
                 <a class="nav-link" href="about.html">About Us</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="blog.html">Account</a>
-              </li>
+                @auth
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route(name: 'profile.edit') }}">Account</a>
+                  </li>
+                @endauth
+                @auth
+                    @if(auth()->user()->canAccessPanel(app(\Filament\Panel::class)))
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Admin Panel</a>
+                        </li>
+                    @endif
+                @endauth
               <ul class="navbar-nav ml-auto">
                 @guest
                     <li class="nav-item">
@@ -72,7 +81,13 @@
                         @csrf
                     </form>
                 @endauth
-</ul>
+                        <li class="nav-item">
+                            <a href="{{ route('locale.switch', 'uk') }}" class="nav-link">Українська</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('locale.switch', 'en') }}" class="nav-link">English</a>
+                        </li>
+              </ul>
             </ul>
           </div>
         </div>

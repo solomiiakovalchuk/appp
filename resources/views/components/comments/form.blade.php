@@ -23,60 +23,81 @@
 </div>
 @section('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const commentHeading = document.getElementById('comment-heading');
-    const commentForm = document.getElementById('comment-form');
-    const commentTextarea = document.getElementById('message');
+    document.addEventListener('DOMContentLoaded', function () {
+        const commentHeading = document.getElementById('comment-heading');
+        const commentForm = document.getElementById('comment-form');
+        const commentTextarea = document.getElementById('message');
+        const isLoggedIn = @json(auth()->check());
+        const commentCountElement = document.querySelector('.sidebar-heading h2'); // Лічильник коментарів
 
-    // Assume this variable is set by your backend
-    const isLoggedIn = @json(auth()->check());
-
-    function toggleCommentForm() {
-        if (!isLoggedIn) {
-            window.location.href = '{{ route("login") }}';
-            return;
-        }
-
-        if (commentForm.style.display === 'none') {
-            commentForm.style.display = 'block';
-            commentHeading.textContent = 'Hide comment form';
-        } else {
-            commentForm.style.display = 'none';
-            commentHeading.textContent = 'Your comment';
-        }
-    }
-
-    commentHeading.addEventListener('click', toggleCommentForm);
-
-    // AJAX submission for comments
-    document.getElementById('comment').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent default form submission
-
-        const formData = new FormData(this);
-        fetch(this.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest' // Indicate it's an AJAX request
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                const commentList = document.getElementById('comment-list');
-                const newComment = document.createElement('div');
-                newComment.innerHTML = `
-                    <p><strong>${data.user.name}:</strong> ${data.comment}</p>
-                `;
-                commentList.prepend(newComment);
-                commentTextarea.value = '';
-                Console.Log('ajax create comment')
+        function toggleCommentForm() {
+            if (!isLoggedIn) {
+                window.location.href = '{{ route("login") }}';
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+
+            if (commentForm.style.display === 'none') {
+                commentForm.style.display = 'block';
+                commentHeading.textContent = 'Hide comment form';
+            } else {
+                commentForm.style.display = 'none';
+                commentHeading.textContent = 'Leave your comment';
+            }
+        }
+
+        commentHeading.addEventListener('click', toggleCommentForm);
+
+        document.getElementById('comment').addEventListener('submit', function (e) {
+            e.preventDefault(); // Запобігти стандартній відправці форми
+
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest' // Позначити, що це AJAX-запит
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const commentList = document.querySelector('.sidebar-item.comments ul');
+                        const newComment = document.createElement('li');
+
+                        newComment.innerHTML = `
+                    <div class="author-thumb">
+                        <!-- Optionally, add the user's image here if available -->
+                    </div>
+                    <div class="right-content">
+                        <h4>${data.user.name}<span>${data.comment.created_at}</span></h4>
+                        <p>${data.comment.message}</p>
+                    </div>
+                `;
+
+                        // Додати новий коментар на початок списку
+                        commentList.prepend(newComment);
+
+                        // Очистити поле тексту
+                        commentTextarea.value = '';
+
+                        // Оновити лічильник коментарів
+                        const currentCount = parseInt(commentCountElement.textContent) || 0;
+                        commentCountElement.textContent = `${currentCount + 1} comments`;
+                        commentAlert = document.getElementById('comment-alert');
+                        commentAlert.style.display = 'block';
+                        setTimeout(() => {
+                            commentAlert.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        console.error('Error in creating comment:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     });
-});
+
+
 </script>
 @endsection
