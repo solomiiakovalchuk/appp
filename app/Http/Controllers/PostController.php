@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Like;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -64,5 +66,23 @@ class PostController extends Controller
         return view('posts.show', [
             'post' => $post,
         ]);
+    }
+
+    public function like(Request $request, Post $post)
+    {
+        $user = Auth::user();
+
+        $existing_like = Like::where('post_id', $post->id)->where('user_id', $user->id)->first();
+
+        if ($existing_like) {
+            $existing_like->delete();
+            return response()->json(['status' => 'unliked']);
+        } else {
+            Like::create([
+                'post_id' => $post->id,
+                'user_id' => $user->id,
+            ]);
+            return response()->json(['status' => 'liked']);
+        }
     }
 }

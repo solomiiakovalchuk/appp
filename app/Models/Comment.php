@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-    protected $fillable = ['parent_id', 'user_id', 'post_id', 'comment', 'status'];
+    protected $fillable = ['user_id', 'post_id', 'comment', 'status'];
 
     public function post()
     {
@@ -28,4 +29,3 @@ class Comment extends Model
         return $this->hasMany(Comment::class, 'parent_id');
     }
 }
-

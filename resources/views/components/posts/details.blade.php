@@ -22,6 +22,32 @@
                     <li><a href="/">#{{ $tag->title }}</a></li>
                 @endforeach
             </ul>
+            <button class="like-button" data-post-id="{{ $post->id }}">
+                <i class="fa fa-heart {{ $post->isLikedByUser() ? 'liked' : '' }}"></i>
+            </button>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.like-button').on('click', function() {
+            var postId = $(this).data('post-id');
+            var button = $(this);
+
+            $.ajax({
+                url: '/post/' + postId + '/like',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}' // Додаємо CSRF токен
+                },
+                success: function(response) {
+                    if (response.status === 'liked') {
+                        button.text('Unlike');
+                    } else {
+                        button.text('Like');
+                    }
+                }
+            });
+        });
+    });
+</script>

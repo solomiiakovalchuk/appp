@@ -38,6 +38,7 @@ Route::group(
         Route::get('/tags/{tag:slug}', [TagController::class, 'posts'])->name('tags.posts');
 
         Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
+        Route::post('/post/{post}/like', [PostController::class, 'like'])->name('post.like');
     }
 );
 
