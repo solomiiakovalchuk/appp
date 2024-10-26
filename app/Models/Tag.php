@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 
@@ -15,7 +16,7 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'title',
         'slug',
     ];
 
@@ -27,12 +28,12 @@ class Tag extends Model
     public static function getForm()
     {
         return [
-            TextInput::make('name')
+            TextInput::make('title')
                 ->live(true)->afterStateUpdated(fn(Set $set, ?string $state) => $set(
                     'slug',
                     Str::slug($state)
                 ))
-                ->unique('tags', 'name', null, 'id')
+                ->unique('tags', 'title', null, 'id')
                 ->required()
                 ->maxLength(50),
 

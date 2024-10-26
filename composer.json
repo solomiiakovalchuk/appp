@@ -9,6 +9,7 @@
         "awcodes/filament-tiptap-editor": "^3.4",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-translatable-plugin": "^3.2",
         "joelbutcher/socialstream": "^6.1",
         "laravel/breeze": "^2.2",
         "laravel/framework": "^11.9",

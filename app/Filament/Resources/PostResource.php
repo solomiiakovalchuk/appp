@@ -26,6 +26,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Support\Str;
+
 class PostResource extends Resource
 {
     use Translatable;
@@ -51,7 +52,7 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Blog Details')
+                Section::make('News Details')
                     ->schema([
                         Fieldset::make('Titles')
                             ->schema([
@@ -60,12 +61,12 @@ class PostResource extends Resource
                                     ->preload()
                                     ->createOptionForm(Category::getForm())
                                     ->searchable()
-                                    ->relationship('categories', 'name')
+                                    ->relationship('categories', 'title')
                                     ->columnSpanFull(),
 
                                 TextInput::make('title')
                                     ->live(true)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set(
+                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set(
                                         'slug',
                                         Str::slug($state)
                                     ))
@@ -76,7 +77,7 @@ class PostResource extends Resource
                                 TextInput::make('slug')
                                     ->maxLength(255),
 
-                                Textarea::make('sub_title')
+                                Textarea::make('short_description')
                                     ->maxLength(255)
                                     ->columnSpanFull(),
 
@@ -85,7 +86,7 @@ class PostResource extends Resource
                                     ->preload()
                                     ->createOptionForm(Tag::getForm())
                                     ->searchable()
-                                    ->relationship('tags', 'name')
+                                    ->relationship('tags', 'title')
                                     ->columnSpanFull(),
                             ]),
                         TiptapEditor::make('body')
@@ -108,9 +109,9 @@ class PostResource extends Resource
                                 TextInput::make('photo_alt_text')->nullable(),
                             ])->columns(1),
                         Select::make('user_id')
-                        ->relationship('user', 'name')
-                        ->nullable(false)
-                        ->default(auth()->id()),
+                            ->relationship('user', 'name')
+                            ->nullable(false)
+                            ->default(auth()->id()),
                     ]),
             ]);
     }
@@ -127,7 +128,7 @@ class PostResource extends Resource
                     ->searchable()->limit(20),
                 Tables\Columns\ImageColumn::make('cover_photo_path')->label('Cover Photo'),
                 Tables\Columns\TextColumn::make('user.name')
-                ->label('Author'),
+                    ->label('Author'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -148,9 +149,6 @@ class PostResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                 ]),
-            ])
-            ->headerActions([
-                Tables\Actions\LocaleSwitcher::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

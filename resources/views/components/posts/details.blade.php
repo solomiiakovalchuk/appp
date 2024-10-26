@@ -1,31 +1,27 @@
 <div class="blog-post">
     <div class="blog-thumb">
-        <img src="{{  asset('storage/' . $post->image_path) }}" alt="{{ $post->title }}">
+        <img loading="lazy" src="{{ asset($post->cover_photo_path) }}" alt="{{ $post->photo_alt_text }}">
     </div>
     <div class="down-content">
-        <span>{{ $post->category->name ?? 'Uncategorized' }}</span>
-        <a href="{{ route('posts.show', $post->id) }}"><h4>{{ $post->title }}</h4></a>
+        <div class="categories">
+            @foreach ($post->categories as $category)
+                <a href=""><span class="category-badge">{{ $category->title }}</span></a>
+            @endforeach
+        </div>
+        <h4>{{ $post->title }}</h4>
+
         <ul class="post-info">
-            <li><a href="#">{{ $post->author->name ?? 'Admin' }}</a></li>
-            <li><a href="#">{{ $post->created_at->format('d-m-Y') }}</a></li>
-            <li><a href="#">{{ $post->comments_count }} Comments</a></li>
+            <li>{{ $post->author->name ?? 'Admin' }}</li>
+            <li>{{ $post->created_at->format('d-m-Y') }}</li>
+            <li>{{ $post->comments_count }} Comments</li>
         </ul>
-        <p>{{ Str::limit($post->body, 150) }}</p>
+        <p>{{ $post->body }}</p>
         <div class="post-options">
-            <div class="row">
-                <div class="col-6">
-                    <ul class="post-tags">
-                        <li><i class="fa fa-tags"></i></li>
-                    </ul>
-                </div>
-                <div class="col-6">
-                    <ul class="post-share">
-                        <li><i class="fa fa-share-alt"></i></li>
-                        <li><a href="#">Facebook</a>,</li>
-                        <li><a href="#"> Twitter</a></li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="post-tags">
+                @foreach ($post->tags as $tag)
+                    <li><a href="/">#{{ $tag->title }}</a></li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('title');
             $table->string('slug')->unique()->index();
-            $table->string('sub_title')->nullable();
+            $table->string('short_description')->nullable();
             $table->longText('body');
             $table->enum('status', ['published', 'scheduled', 'pending'])->default('pending');
             $table->dateTime('published_at')->nullable();

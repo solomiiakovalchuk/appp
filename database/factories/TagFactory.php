@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Factories;
 
 use App\Models\Tag;
@@ -12,8 +13,8 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->sentence,
-            'slug' => Str::slug($this->faker->sentence),
+            'title' => $this->faker->unique()->realText(15),
+            'slug' => fn(array $attributes) => Str::slug($attributes['title']),
         ];
     }
 }

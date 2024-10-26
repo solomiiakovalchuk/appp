@@ -16,7 +16,7 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'title',
         'slug',
         'description',
         'is_active',
@@ -28,37 +28,21 @@ class Category extends Model
         'show_in_menu' => 'boolean',
     ];
 
-    /**
-     * Get the parent category.
-     */
-    public function parent()
-    {
-        return $this->belongsTo(Category::class, 'parent_id');
-    }
-
-    /**
-     * Get the child categories.
-     */
-    public function children()
-    {
-        return $this->hasMany(Category::class, 'parent_id');
-    }
-
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class,'category_post');
+        return $this->belongsToMany(Post::class, 'category_post');
     }
 
     public static function getForm()
     {
         return [
-            TextInput::make('name')
+            TextInput::make('title')
                 ->live(true)
                 ->afterStateUpdated(function (Get $get, Set $set, ?string $operation, ?string $old, ?string $state) {
 
                     $set('slug', Str::slug($state));
                 })
-                ->unique('categories', 'name', null, 'id')
+                ->unique('categories', 'title', null, 'id')
                 ->required()
                 ->maxLength(155),
 

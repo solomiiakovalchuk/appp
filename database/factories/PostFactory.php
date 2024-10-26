@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Factories;
 
 use App\Models\Post;
@@ -12,14 +13,23 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence,
-            'slug' => Str::slug($this->faker->sentence),
-            'sub_title' => $this->faker->sentence,
-            'body' => $this->faker->paragraphs(3, true),
+            'title' => [
+                'en' => $this->faker->unique()->realText(30),
+                'uk' => $this->faker->unique()->realText(30),
+            ],
+            'slug' => fn(array $attributes) => Str::slug($attributes['title']['en']),
+            'short_description' => [
+                'en' => $this->faker->realText(100),
+                'uk' => $this->faker->realText(100),
+            ],
+            'body' => [
+                'en' => $this->faker->realText(230),
+                'uk' => $this->faker->realText(230),
+            ],
             'status' => 1,
             'published_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'cover_photo_path' => $this->faker->imageUrl(640, 480, 'posts', true),
-            'photo_alt_text' => $this->faker->sentence,
+            'cover_photo_path' => $this->faker->imageUrl(640, 480, 'nature', true, 'Nature Post'),
+            'photo_alt_text' => $this->faker->realText(30),
             'user_id' => 1,
         ];
     }

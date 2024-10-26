@@ -8,5 +8,14 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreatePost extends CreateRecord
 {
+    use CreateRecord\Concerns\Translatable;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\LocaleSwitcher::make(),
+            // ...
+        ];
+    }
     protected static string $resource = PostResource::class;
 }

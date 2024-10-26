@@ -13,21 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-            Schema::create('categories', function (Blueprint $table) {
-                $table->id();
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
 
-                $table->string('name');
-                $table->string('slug')->unique()->index();
-                $table->text('description')->nullable();
+            $table->string('title');
+            $table->string('slug')->unique()->index();
+            $table->text('description')->nullable();
 
-                $table->boolean('is_active')->default(1)->nullable();
-                $table->boolean('show_in_menu')->default(0)->nullable();
+            $table->boolean('is_active')->default(1)->nullable();
+            $table->boolean('show_in_menu')->default(0)->nullable();
 
-                $table->timestamps();
+            $table->timestamps();
 
-                $table->softDeletes();
-            });
-
+            $table->softDeletes();
+        });
     }
 
     /**

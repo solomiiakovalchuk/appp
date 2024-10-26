@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LocaleController;
@@ -36,9 +37,9 @@ Route::group(
         Route::get('/categories/{category:slug}', [CategoryController::class, 'posts'])->name('categories.posts');
         Route::get('/tags/{tag:slug}', [TagController::class, 'posts'])->name('tags.posts');
 
-        Route::post('/posts/{post:slug}/comment', [CommentController::class, 'store'])->name('comments.store');
+        Route::post('/comment', [CommentController::class, 'store'])->name('comments.store');
     }
 );
 
-require __DIR__.'/auth.php';
-require __DIR__.'/socialstream.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/socialstream.php';

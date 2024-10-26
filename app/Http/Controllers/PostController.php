@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class PostController extends Controller
 {
@@ -10,19 +13,22 @@ class PostController extends Controller
     {
         $posts = Post::query()->with(['categories', 'user', 'tags'])
             ->paginate(10);
-
+        $tags = Tag::get();
         return view('posts.index', [
             'posts' => $posts,
+            'tags' => $tags,
         ]);
     }
 
     public function allPosts()
     {
-        $posts = Post::query()->with(['categories', 'user'])
+        $posts = Post::query()->with(['categories', 'user', 'tags'])
             ->paginate(20);
 
-        return response()->json([
+        $tags = Tag::get();
+        return view('posts.index', [
             'posts' => $posts,
+            'tags' => $tags,
         ]);
     }
 
@@ -35,14 +41,14 @@ class PostController extends Controller
         $searchedPosts = Post::query()
             ->with(['categories', 'user'])
             ->where(function ($query) use ($request) {
-                $query->where('title', 'like', '%'.$request->get('query').'%')
-                    ->orWhere('sub_title', 'like', '%'.$request->get('query').'%');
+                $query->where('title', 'like', '%' . $request->get('query') . '%')
+                    ->orWhere('sub_title', 'like', '%' . $request->get('query') . '%');
             })
             ->paginate(10)->withQueryString();
 
         return response()->json([
             'posts' => $searchedPosts,
-            'searchMessage' => 'Search result for '.$request->get('query'),
+            'searchMessage' => 'Search result for ' . $request->get('query'),
         ]);
     }
 

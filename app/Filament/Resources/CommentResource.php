@@ -43,7 +43,13 @@ class CommentResource extends Resource
                     ->required(),
                 Select::make('post_id')
                     ->label('Post')
-                    ->options(Post::all()->pluck('title', 'id'))
+                    ->options(function () {
+                        return Post::all()
+                            ->mapWithKeys(function ($post) {
+                                $translatedTitle = $post->getTranslation('title', app()->getLocale());
+                                return [$post->id => $translatedTitle];
+                            });
+                    })
                     ->searchable()
                     ->required(),
                 Textarea::make('comment')
@@ -62,7 +68,8 @@ class CommentResource extends Resource
                     ->limit(20)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('post.title')
-                    ->numeric()
+                    ->label('Title')
+                    ->getStateUsing(fn($record) => $record->getTranslation('title', app()->getLocale()))
                     ->limit(20)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('comment')

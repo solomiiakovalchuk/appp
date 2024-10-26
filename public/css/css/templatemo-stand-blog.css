@@ -406,7 +406,7 @@ header .navbar {
 /* Blog Posts */
 
 .blog-posts {
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 .blog-posts .blog-post {
@@ -415,6 +415,9 @@ header .navbar {
 
 .blog-posts .blog-thumb img {
 	width: 100%;
+    aspect-ratio: 4 / 2; 
+		object-fit: cover;   
+		object-position: center; 
 	overflow: hidden;
 }
 
@@ -491,7 +494,20 @@ header .navbar {
 .blog-posts .down-content ul.post-share {
 	text-align: right;
 }
+.categories {
+    margin-bottom: 10px; /* Відстань між категоріями та іншими елементами */
+}
 
+.category-badge {
+    display: inline-block; 
+    background-color: #ffffff; 
+	border: 1px solid #2b2b2b; /* Додає бордер */
+    color: #333; 
+    color: #333; 
+    padding: 5px 10px; 
+    margin-right: 5px; 
+    font-size: 12px; 
+}
 .blog-posts .down-content ul.post-tags li,
 .blog-posts .down-content ul.post-share li {
 	display: inline-block;
