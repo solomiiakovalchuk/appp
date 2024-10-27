@@ -34,6 +34,16 @@ class PostController extends Controller
         ]);
     }
 
+    public function more()
+    {
+        $posts = Post::with(['categories', 'user', 'tags'])->get();
+        $tags = Tag::get();
+        return view('posts.more', [
+            'posts' => $posts,
+            'tags' => $tags,
+        ]);
+    }
+
     public function search(Request $request)
     {
         $request->validate([

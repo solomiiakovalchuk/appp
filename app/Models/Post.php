@@ -60,6 +60,11 @@ class Post extends Model
         return $this->hasMany(Like::class);
     }
 
+    public function isLikedByUser()
+    {
+        return $this->likes()->where('user_id', auth()->id())->exists();
+    }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'post_tag');

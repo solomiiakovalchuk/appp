@@ -24,10 +24,14 @@
 
             <div class="post-options">
                 <ul class="post-tags">
+                    <li><i class="fa fa-tags"></i></li>
                     @foreach ($post->tags as $tag)
-                        <li><a href="/">#{{ $tag->title }}</a></li>
+                        <li><a href="/">{{ $tag->title }}, </a></li>
                     @endforeach
                 </ul>
+                <a href="javascript:void(0)" class="like-button" data-post-id="{{ $post->id }}">
+                    <i class="fa fa-heart {{ $post->isLikedByUser() ? 'liked' : '' }}"></i>
+                </a>
             </div>
         </div>
     </div>

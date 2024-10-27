@@ -29,11 +29,10 @@ Route::group(
 
         Route::get('/', [PostController::class, 'index'])->name('posts.index');
         Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-        Route::get('/posts/all', [PostController::class, 'allPosts'])->name('posts.more');
         Route::get('/posts/search', [PostController::class, 'search'])->name('posts.search');
         Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
         Route::post('/posts/{post:slug}/subscribe', [PostController::class, 'subscribe'])->name('posts.subscribe');
-
+        Route::get('/more', [PostController::class, 'more'])->name('posts.more');
         Route::get('/categories/{category:slug}', [CategoryController::class, 'posts'])->name('categories.posts');
         Route::get('/tags/{tag:slug}', [TagController::class, 'posts'])->name('tags.posts');
 

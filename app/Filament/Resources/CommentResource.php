@@ -69,9 +69,10 @@ class CommentResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('post.title')
                     ->label('Title')
-                    ->getStateUsing(fn($record) => $record->getTranslation('title', app()->getLocale()))
+                    ->getStateUsing(fn($record) => $record->post->getTranslation('title', app()->getLocale())) // Отримуємо переклад назви поста
                     ->limit(20)
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('comment')
                     ->searchable()
                     ->limit(20),
