@@ -1,7 +1,7 @@
 <div class="col-lg-6">
     <div class="blog-post">
         <div class="blog-thumb">
-            <img loading="lazy" src="{{ asset($post->cover_photo_path) }}" alt="{{ $post->title }}">
+            <img loading="lazy" src="{{ asset('storage/' .$post->cover_photo_path) }}" alt="{{ $post->title }}">
         </div>
         <div class="down-content">
             @foreach ($post->categories as $category)

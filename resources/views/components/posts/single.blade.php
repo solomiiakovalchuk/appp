@@ -1,7 +1,7 @@
 <div class="col-lg-12">
     <div class="blog-post">
         <div class="blog-thumb">
-            <img loading="lazy" src="{{ asset($post->cover_photo_path) }}" alt="">
+            <img loading="lazy" src="{{ asset('storage/' .$post->cover_photo_path) }}" alt="">
         </div>
         <div class="down-content">
             <div class="categories">
