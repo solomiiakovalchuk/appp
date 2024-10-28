@@ -15,6 +15,7 @@
         "laravel/breeze": "^2.2",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "pboivin/filament-peek": "^2.2",
         "spatie/laravel-settings": "^3.3"
     },
     "require-dev": {

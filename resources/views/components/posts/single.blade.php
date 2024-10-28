@@ -6,7 +6,8 @@
         <div class="down-content">
             <div class="categories">
                 @foreach ($post->categories as $category)
-                    <a href=""><span class="category-badge">{{ $category->title }}</span></a>
+                    <a href="{{ route('categories.posts', $category->slug) }}"><span
+                            class="category-badge">{{ $category->title }}</span></a>
                 @endforeach
             </div>
 
@@ -26,7 +27,7 @@
                 <ul class="post-tags">
                     <li><i class="fa fa-tags"></i></li>
                     @foreach ($post->tags as $tag)
-                        <li><a href="/">{{ $tag->title }}, </a></li>
+                        <li><a href="{{ route('tags.posts', $tag->slug) }}">{{ $tag->title }}, </a></li>
                     @endforeach
                 </ul>
                 <a href="javascript:void(0)" class="like-button" data-post-id="{{ $post->id }}">

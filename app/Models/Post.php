@@ -26,6 +26,7 @@ class Post extends Model
         'cover_photo_path',
         'photo_alt_text',
         'user_id',
+        'visible_on_slider',
     ];
 
     protected $dates = [

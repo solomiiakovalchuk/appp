@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('photo_alt_text')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->double('likes')->default(0);
+            $table->boolean('visible_on_slider')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

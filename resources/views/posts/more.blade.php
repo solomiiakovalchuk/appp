@@ -4,7 +4,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="all-blog-posts">
+                    @if (isset($filterTitle))
+                        <h1>{{ $filterTitle }}</h1>
+                    @endif
+                    <div class="mt-2 all-blog-posts">
                         <div class="row">
                             @foreach ($posts as $post)
                                 <x-posts.single-small :post="$post" />

@@ -2,30 +2,33 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Tag;
+use App\Models\Post;
+use Filament\Tables;
+use Filament\Forms\Set;
+use App\Models\Category;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Filament\Resources\Pages\Page;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
+use FilamentTiptapEditor\TiptapEditor;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\BooleanColumn;
+use Filament\Resources\Concerns\Translatable;
 use App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource\Pages\EditPost;
 use App\Filament\Resources\PostResource\RelationManagers;
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\Tag;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Set;
-use Filament\Pages\SubNavigationPosition;
-use Filament\Resources\Concerns\Translatable;
-use Filament\Resources\Pages\Page;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
-use FilamentTiptapEditor\TiptapEditor;
-use Illuminate\Support\Str;
+use Pboivin\FilamentPeek\Tables\Actions\ListPreviewAction;
 
 class PostResource extends Resource
 {
@@ -112,6 +115,9 @@ class PostResource extends Resource
                             ->relationship('user', 'name')
                             ->nullable(false)
                             ->default(auth()->id()),
+                        Toggle::make('visible_on_slider')
+                            ->label('Visible on Slider')
+                            ->default(false),
                     ]),
             ]);
     }
@@ -129,6 +135,9 @@ class PostResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_photo_path')->label('Cover Photo'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Author'),
+                BooleanColumn::make('visible_on_slider')
+                    ->label('Visible on Slider')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -148,6 +157,7 @@ class PostResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
+                    ListPreviewAction::make(),
                 ]),
             ])
             ->bulkActions([

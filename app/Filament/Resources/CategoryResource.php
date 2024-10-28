@@ -43,7 +43,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug'),
                 Tables\Columns\TextColumn::make('posts_count')
@@ -78,7 +78,7 @@ class CategoryResource extends Resource
         return $infolist->schema([
             Section::make('Category')
                 ->schema([
-                    TextEntry::make('name'),
+                    TextEntry::make('title'),
                     TextEntry::make('slug'),
                 ])->columns(2)
                 ->icon('heroicon-o-square-3-stack-3d'),

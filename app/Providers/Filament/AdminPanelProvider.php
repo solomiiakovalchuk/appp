@@ -10,6 +10,7 @@ use Filament\Support\Colors\Color;
 use Awcodes\Overlook\OverlookPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Awcodes\Overlook\Widgets\OverlookWidget;
+use Pboivin\FilamentPeek\FilamentPeekPlugin;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -69,6 +70,7 @@ class AdminPanelProvider extends PanelProvider
                         'xl' => 5,
                         '2xl' => null,
                     ]),
+                FilamentPeekPlugin::make(),
             ])->widgets([
                 OverlookWidget::class,
             ])

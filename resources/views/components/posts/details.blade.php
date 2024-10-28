@@ -5,7 +5,8 @@
     <div class="down-content">
         <div class="categories">
             @foreach ($post->categories as $category)
-                <a href=""><span class="category-badge">{{ $category->title }}</span></a>
+                <a href="{{ route('categories.posts', $category->slug) }}"><span
+                        class="category-badge">{{ $category->title }}</span></a>
             @endforeach
         </div>
         <h4>{{ $post->title }}</h4>
@@ -15,12 +16,12 @@
             <li>{{ $post->created_at->format('d-m-Y') }}</li>
             <li>{{ $post->comments_count }} Comments</li>
         </ul>
-        <p>{{ $post->body }}</p>
+        {!! $post->body !!}
         <div class="post-options">
             <ul class="post-tags">
                 <li><i class="fa fa-tags"></i></li>
                 @foreach ($post->tags as $tag)
-                    <li><a href="/">{{ $tag->title }}, </a></li>
+                    <li><a href="{{ route('tags.posts', $tag->slug) }}">{{ $tag->title }}, </a></li>
                 @endforeach
             </ul>
             <a href="javascript:void(0)" class="like-button" data-post-id="{{ $post->id }}">

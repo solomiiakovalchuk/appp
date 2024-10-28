@@ -31,6 +31,7 @@ class PostFactory extends Factory
             'cover_photo_path' => $this->faker->imageUrl(640, 480, 'nature', true, 'Nature Post'),
             'photo_alt_text' => $this->faker->realText(30),
             'user_id' => 1,
+            'visible_on_slider' => $this->faker->boolean(20),
         ];
     }
 }

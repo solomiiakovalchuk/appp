@@ -4,6 +4,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    @if (isset($filterTitle))
+                        <h2>{{ $filterTitle }}</h2>
+                    @endif
                     <div class="all-blog-posts">
                         <div class="row">
                             @foreach ($posts as $post)

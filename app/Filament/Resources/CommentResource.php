@@ -34,8 +34,6 @@ class CommentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parent_id')
-                    ->numeric(),
                 Select::make('user_id')
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
