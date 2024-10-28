@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-    <x-banner />
+    <x-banner :sliderPosts="$sliderPosts"/>
     <section class="blog-posts">
         <div class="container">
             <div class="row">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </div>
-                <x-posts.sidebar :tags="$tags" />
+                <x-posts.sidebar :tags="$tags" :recentPosts="$recentPosts" />
             </div>
         </div>
     </section>

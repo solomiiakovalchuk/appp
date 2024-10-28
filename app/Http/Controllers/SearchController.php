@@ -9,21 +9,18 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 
-class PostController extends Controller
+class SearchController extends Controller
 {
     public function index(Request $request)
     {
         $posts = Post::query()->with(['categories', 'user', 'tags'])->orderBy('created_at', 'desc')
             ->paginate(10);
         $slider_posts = Post::where('visible_on_slider', 1)->get();
-        $recentPosts = Post::latest()->take(4)->get();
         $tags = Tag::get();
         return view('posts.index', [
             'posts' => $posts,
-            'sliderPosts' => $slider_posts,
-            'recentPosts' => $recentPosts,
+            'slider_posts' => $slider_posts,
             'tags' => $tags,
         ]);
     }
@@ -33,7 +30,6 @@ class PostController extends Controller
         $categorySlug = $request->route()->parameter('category');
         $tagSlug = $request->route()->parameter('tag');
         $tags = Tag::all();
-        $recentPosts = Post::latest()->take(4)->get();
 
         $category = $categorySlug ? Category::where('slug', $categorySlug)->first() : null;
         $tag = $tagSlug ? Tag::where('slug', $tagSlug)->first() : null;
@@ -56,58 +52,29 @@ class PostController extends Controller
         return view('posts.more', [
             'posts' => $posts,
             'tags' => $tags,
-            'recentPosts' => $recentPosts,
             'filterTitle' => $filterTitle,
         ]);
     }
 
+
+
     public function search(Request $request)
     {
         $request->validate([
-            'query' => 'required|string|min:2',
-            'requestType' => 'in:api,route',
+            'query' => 'required',
         ]);
-
-        $query = $request->get('query');
 
         $searchedPosts = Post::query()
             ->with(['categories', 'user'])
-            ->where(function ($q) use ($query) {
-                $q->where('title', 'like', '%' . $query . '%')
-                    ->orWhere('short_description', 'like', '%' . $query . '%');
+            ->where(function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->get('query') . '%')
+                    ->orWhere('sub_title', 'like', '%' . $request->get('query') . '%');
             })
             ->paginate(10)->withQueryString();
 
-        $searchedCategories = Category::where('title', 'like', '%' . $query . '%')
-            ->select('id', 'title')
-            ->get();
-
-        $searchedTags = Tag::where('title', 'like', '%' . $query . '%')
-            ->select('id', 'title')
-            ->get();
-
-        if ($request->get('requestType') === 'route') {
-            $slider_posts = Post::where('visible_on_slider', 1)->get();
-            $tags = Tag::get();
-            $recentPosts = Post::latest()->take(4)->get();
-
-            return view('posts.index', [
-                'posts' => $searchedPosts,
-                'recentPosts' => $recentPosts,
-                'sliderPosts' => $slider_posts,
-                'tags' => $tags,
-            ]);
-        }
         return response()->json([
-            'posts' => $searchedPosts->items(),
-            'categories' => $searchedCategories,
-            'tags' => $searchedTags,
-            'searchMessage' => 'Search results for: ' . $query,
-            'pagination' => [
-                'total' => $searchedPosts->total(),
-                'current_page' => $searchedPosts->currentPage(),
-                'last_page' => $searchedPosts->lastPage(),
-            ]
+            'posts' => $searchedPosts,
+            'searchMessage' => 'Search result for ' . $request->get('query'),
         ]);
     }
 

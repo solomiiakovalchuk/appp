@@ -6,12 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="TemplateMo">
+    <meta name="author" content="SolomiaKovalchuk">
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
         rel="stylesheet">
 
-    <title>@yield('title')</title>
+    <title>News Portal</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -187,7 +187,65 @@
             });
         });
     </script>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const activeLocale = searchInput.getAttribute('data-locale');
 
+        searchInput.addEventListener('input', function () {
+            const query = this.value.trim();
+
+            if (query.length > 1) {
+                fetchResults(query);
+            } else if (query === '') {
+                searchResults.innerHTML = '';
+                searchResults.innerHTML = '<div class="no-results">Start typing to search...</div>';
+                searchResults.style.display = 'block';
+            }
+        });
+
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const query = searchInput.value.trim();
+                if (query.length > 0) {
+                    document.getElementById('requestType').value = 'route';
+                    document.getElementById('search_form').submit();
+                }
+            }
+        });
+
+        searchInput.addEventListener('focus', () => {
+            searchResults.style.display = 'block';
+        });
+
+        searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                searchResults.style.display = 'none';
+            }, 200);
+        });
+
+        function fetchResults(query) {
+            fetch(`/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = '';
+                    if (data.posts.length || data.categories.length || data.tags.length) {
+                        data.posts.forEach(post => {
+                            const title = post.title[activeLocale];
+                            const resultItem = document.createElement('div');
+                            resultItem.classList.add('search-result-item');
+                            resultItem.innerHTML = `<a href="/posts/${post.slug}">${title}</a>`;
+                            searchResults.appendChild(resultItem);
+                        });
+                    } else {
+                        searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                    }
+                    searchResults.style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching search results:', error));
+        }
+    </script>
 </body>
 
 </html>

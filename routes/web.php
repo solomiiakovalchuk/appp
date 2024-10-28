@@ -21,11 +21,12 @@ Route::group(
         'prefix' => LocaleMiddleware::getLocale(),
     ],
     function () {
+        Route::get('/search', [PostController::class, 'search'])->name('search');
+
         Route::get('locale/{locale}', LocaleController::class)->name('change-locale');
 
         Route::get('/', [PostController::class, 'index'])->name('posts.index');
         Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-        Route::get('/posts/search', [PostController::class, 'search'])->name('posts.search');
         Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
         Route::get('/more', [PostController::class, 'more'])->name('posts.more');
         Route::get('/categories/{category:slug}', [PostController::class, 'more'])->name('categories.posts');

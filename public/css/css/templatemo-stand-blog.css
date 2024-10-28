@@ -1,4 +1,4 @@
-/* 
+/*
 
 TemplateMo 551 Stand Blog
 
@@ -254,7 +254,7 @@ header .navbar {
 }
 .navbar .navbar-toggler {
 	border-color: #fff;
-	background-color: #f48840;	
+	background-color: #f48840;
 	height: 46px;
 	outline: none;
 	border-radius: 0px;
@@ -457,9 +457,9 @@ header .navbar {
 
 .blog-posts .blog-thumb img {
 	width: 100%;
-    aspect-ratio: 4 / 2; 
-		object-fit: cover;   
-		object-position: center; 
+    aspect-ratio: 4 / 2;
+		object-fit: cover;
+		object-position: center;
 	overflow: hidden;
 }
 
@@ -541,14 +541,14 @@ header .navbar {
 }
 
 .category-badge {
-    display: inline-block; 
-    background-color: #ffffff; 
+    display: inline-block;
+    background-color: #ffffff;
 	border: 1px solid #2b2b2b; /* Додає бордер */
-    color: #333; 
-    color: #333; 
-    padding: 5px 10px; 
-    margin-right: 5px; 
-    font-size: 12px; 
+    color: #333;
+    color: #333;
+    padding: 5px 10px;
+    margin-right: 5px;
+    font-size: 12px;
 }
 .blog-posts .down-content ul.post-tags li,
 .blog-posts .down-content ul.post-share li {
@@ -771,6 +771,36 @@ ul.page-numbers li a:hover {
 	color: #7a7a7a;
 	outline: none;
 	padding: 0px 15px;
+}
+.search-results {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-top: none;
+    z-index: 1000;
+    display: none;
+}
+
+.search-result-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-result-item a {
+    color: #333;
+    text-decoration: none;
+}
+
+.search-result-item a:hover {
+    text-decoration: underline;
+}
+
+.no-results {
+    padding: 10px;
+    color: #888;
+    font-style: italic;
 }
 
 .sidebar .search input::placeholder {

@@ -102,7 +102,7 @@ class PostResource extends Resource
                             ->schema([
                                 FileUpload::make('cover_photo_path')
                                     ->label('Cover Photo')
-                                    ->disk('local')
+                                    ->disk('public')
                                     ->directory('images/posts')
                                     ->hint('This cover image is used in your blog post as a feature image. Recommended image size 1200 X 628')
                                     ->image()

@@ -1,12 +1,16 @@
 @props(['tags'])
+@props(['recentPosts'])
 <div class="col-lg-4">
     <div class="sidebar">
         <div class="row">
             <div class="col-lg-12">
                 <div class="sidebar-item search">
-                    <form id="search_form" name="gs" method="GET" action="#">
-                        <input type="text" name="q" class="searchText" placeholder="type to search..."
-                            autocomplete="on">
+                    <form id="search_form" name="gs" method="GET" action="{{ route('search') }}">
+                        <input type="text" id="searchInput" name="query" class="searchText" placeholder="type to search..."
+                               autocomplete="on" data-locale="{{ app()->getLocale() }}">
+
+                        <div id="searchResults" class="search-results"></div>
+                        <input type="hidden" id="requestType" name="requestType" value="api">
                     </form>
                 </div>
             </div>
@@ -17,18 +21,14 @@
                     </div>
                     <div class="content">
                         <ul>
-                            <li><a href="post-details.html">
-                                    <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                                    <span>May 31, 2020</span>
-                                </a></li>
-                            <li><a href="post-details.html">
-                                    <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                                    <span>May 28, 2020</span>
-                                </a></li>
-                            <li><a href="post-details.html">
-                                    <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                                    <span>May 14, 2020</span>
-                                </a></li>
+                            @foreach ($recentPosts as $post)
+                                <li>
+                                    <a href="{{ route('posts.show', $post->slug) }}">
+                                        <h5>{{ $post->title }}</h5>
+                                        <span>{{ $post->created_at->format('F d, Y') }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <div class="content">
                         <ul>
                             @foreach ($tags as $tag)
-                                <li><a href="/">#{{ $tag->title }}</a></li>
+                                <li><a href="{{ route('tags.posts', $tag->slug) }}">#{{ $tag->title }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -50,3 +50,4 @@
         </div>
     </div>
 </div>
+
