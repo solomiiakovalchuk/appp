@@ -40,7 +40,6 @@ class CommentResource extends Resource
                     ->searchable()
                     ->required(),
                 Select::make('post_id')
-                    ->label('Post')
                     ->options(function () {
                         return Post::all()
                             ->mapWithKeys(function ($post) {
@@ -84,6 +83,15 @@ class CommentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('post_id')
+                    ->options(function () {
+                        return \App\Models\Post::all()
+                            ->mapWithKeys(function ($post) {
+                                $translatedTitle = $post->getTranslation('title', app()->getLocale());
+                                return [$post->id => $translatedTitle];
+                            });
+                    })
+                    ->searchable(),
                 Tables\Filters\SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->searchable()

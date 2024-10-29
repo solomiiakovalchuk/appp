@@ -39,7 +39,6 @@ class PostResource extends Resource
 
     protected static ?string $label = 'News';
     protected static ?string $navigationGroup = 'News';
-
     protected static ?string $recordTitleAttribute = 'title';
 
     protected static ?int $navigationSort = 3;
@@ -167,12 +166,6 @@ class PostResource extends Resource
             ]);
     }
 
-    public static function getRecordSubNavigation(Page $page): array
-    {
-        return $page->generateNavigationItems([
-            EditPost::class,
-        ]);
-    }
     protected function getHeaderActions(): array
     {
         return [

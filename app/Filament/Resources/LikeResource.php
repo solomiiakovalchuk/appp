@@ -29,13 +29,13 @@ class LikeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('post_id')
-                    ->label('Post')
                     ->options(function () {
                         return Post::all()
                             ->mapWithKeys(function ($post) {
                                 $translatedTitle = $post->getTranslation('title', app()->getLocale());
                                 return [$post->id => $translatedTitle];
-                            });
+                            })
+                            ->toArray();
                     })
                     ->searchable()
                     ->required(),
@@ -78,7 +78,6 @@ class LikeResource extends Resource
             ->filters([
 
                 Tables\Filters\SelectFilter::make('post_id')
-                    ->label('Post')
                     ->options(function () {
                         return \App\Models\Post::all()
                             ->mapWithKeys(function ($post) {
@@ -108,7 +107,7 @@ class LikeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // 
+            //
         ];
     }
 
