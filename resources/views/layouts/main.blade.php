@@ -11,7 +11,7 @@
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
         rel="stylesheet">
 
-    <title>News Portal</title>
+    <title>{{ __('messages.title') }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -41,7 +41,7 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href= "{{ route(name: 'posts.index') }}">
-                    <h2>NewsPortal<em>.</em></h2>
+                    <h2>{{ __('messages.title') }}<em>.</em></h2>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,28 +50,28 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href= "{{ route(name: 'posts.index') }}">Home
+                            <a class="nav-link" href= "{{ route(name: 'posts.index') }}">{{ __('messages.home') }}
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About Us</a>
+                            <a class="nav-link" href="about.html">{{ __('messages.about') }}</a>
                         </li>
                         @auth
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route(name: 'profile.edit') }}">Account</a>
+                                <a class="nav-link" href="{{ route(name: 'profile.edit') }}">{{ __('messages.account') }}</a>
                             </li>
                         @endauth
                         @auth
                             @if (auth()->user()->canAccessPanel(app(\Filament\Panel::class)))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/admin">Admin Panel</a>
+                                    <a class="nav-link" href="/admin">{{ __('messages.admin_panel') }}</a>
                                 </li>
                             @endif
                         @endauth
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                             </li>
                         @endguest
 
@@ -79,7 +79,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('messages.logout') }}
                                 </a>
                             </li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -87,8 +87,8 @@
                             </form>
                         @endauth
                         <li class="nav-item">
-                            @if (app()->getLocale() === 'en')
-                                <a class="nav-link" href="{{ route('change-locale', 'uk') }}">
+                            @if (app()->getLocale() === 'uk')
+                                <a class="nav-link" href="{{ route('change-locale', 'en') }}">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -100,7 +100,7 @@
                                     </svg>
                                 </a>
                             @else
-                                <a class="nav-link" href="{{ route('change-locale', 'en') }}">
+                                <a class="nav-link" href="{{ route('change-locale', 'uk') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <path

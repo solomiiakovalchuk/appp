@@ -1,13 +1,14 @@
 <div class="col-lg-12">
     <div class="blog-post">
         <div class="blog-thumb">
-            <img loading="lazy" src="{{ asset('storage/' .$post->cover_photo_path) }}" alt="">
+            <img loading="lazy" src="{{ asset('storage/' . $post->cover_photo_path) }}" alt="">
         </div>
         <div class="down-content">
             <div class="categories">
                 @foreach ($post->categories as $category)
-                    <a href="{{ route('categories.posts', $category->slug) }}"><span
-                            class="category-badge">{{ $category->title }}</span></a>
+                    <a href="{{ route('categories.posts', $category->slug) }}">
+                        <span class="category-badge">{{ $category->title }}</span>
+                    </a>
                 @endforeach
             </div>
 
@@ -16,9 +17,9 @@
             </a>
 
             <ul class="post-info">
-                <li><a href="#">{{ $post->author ?? 'Admin' }}</a></li>
+                <li><a href="#">{{ $post->author ?? __('post.admin') }}</a></li>
                 <li><a href="#">{{ $post->created_at->format('F d, Y') }}</a></li>
-                <li><a href="#">{{ $post->comments->count() }} Comments</a></li>
+                <li><a href="#">{{ $post->comments->count() }} {{ __('post.comments') }}</a></li>
             </ul>
 
             <p>{{ $post->short_description }}</p>
