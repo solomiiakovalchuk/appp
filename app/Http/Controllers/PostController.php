@@ -20,11 +20,13 @@ class PostController extends Controller
         $slider_posts = Post::where('visible_on_slider', 1)->get();
         $recentPosts = Post::latest()->take(4)->get();
         $tags = Tag::get();
+        $categories = Category::get();
         return view('posts.index', [
             'posts' => $posts,
             'sliderPosts' => $slider_posts,
             'recentPosts' => $recentPosts,
             'tags' => $tags,
+            'categories' => $categories,
         ]);
     }
 
@@ -33,6 +35,7 @@ class PostController extends Controller
         $categorySlug = $request->route()->parameter('category');
         $tagSlug = $request->route()->parameter('tag');
         $tags = Tag::all();
+        $categories = Category::all();
         $recentPosts = Post::latest()->take(4)->get();
 
         $category = $categorySlug ? Category::where('slug', $categorySlug)->first() : null;
@@ -56,6 +59,7 @@ class PostController extends Controller
         return view('posts.more', [
             'posts' => $posts,
             'tags' => $tags,
+            'categories' => $categories,
             'recentPosts' => $recentPosts,
             'filterTitle' => $filterTitle,
         ]);
@@ -89,6 +93,7 @@ class PostController extends Controller
         if ($request->get('requestType') === 'route') {
             $slider_posts = Post::where('visible_on_slider', 1)->get();
             $tags = Tag::get();
+            $categories = Category::get();
             $recentPosts = Post::latest()->take(4)->get();
 
             return view('posts.index', [
@@ -96,6 +101,7 @@ class PostController extends Controller
                 'recentPosts' => $recentPosts,
                 'sliderPosts' => $slider_posts,
                 'tags' => $tags,
+                'categories' => $categories,
             ]);
         }
         return response()->json([
@@ -110,6 +116,50 @@ class PostController extends Controller
             ]
         ]);
     }
+
+    public function filterByCategories(Request $request)
+    {
+        $categories = $request->input('categories', []);
+
+        $postsQuery = Post::with(['categories', 'tags', 'comments'])->withCount('comments');
+
+        if (!empty($categories)) {
+            $postsQuery->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('categories.id', $categories);
+            });
+        }
+
+        $posts = $postsQuery->paginate(10);
+
+        $data = $posts->map(function ($post) {
+            return [
+                'id' => $post->id,
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'cover_photo_path' => asset('storage/' . $post->cover_photo_path),
+                'author' => $post->user->name,
+                'created_at' => $post->created_at->format('F d, Y'),
+                'short_description' => $post->short_description,
+                'categories' => $post->categories->map(function ($category) {
+                    return [
+                        'title' => $category->title,
+                        'slug' => $category->slug,
+                    ];
+                }),
+                'tags' => $post->tags->map(function ($tag) {
+                    return [
+                        'title' => $tag->title,
+                        'slug' => $tag->slug,
+                    ];
+                }),
+                'is_liked' => $post->isLikedByUser(),
+                'comments_count' => $post->comments_count,
+            ];
+        });
+
+        return response()->json(['posts' => $data]);
+    }
+
 
     public function show(Post $post)
     {

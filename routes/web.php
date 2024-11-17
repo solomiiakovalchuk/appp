@@ -22,6 +22,7 @@ Route::group(
     ],
     function () {
         Route::get('/search', [PostController::class, 'search'])->name('search');
+        Route::post('/filter-by-categories', [PostController::class, 'filterByCategories'])->name('filter.categories');
 
         Route::get('locale/{locale}', LocaleController::class)->name('change-locale');
 

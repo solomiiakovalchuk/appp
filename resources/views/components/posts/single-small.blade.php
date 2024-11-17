@@ -13,7 +13,6 @@
             <ul class="post-info">
                 <li><a href="#">{{ $post->author->name ?? 'Admin' }}</a></li>
                 <li><a href="#">{{ $post->created_at->format('d-m-Y') }}</a></li>
-                <li><a href="#">12 Comments</a></li>
             </ul>
             <p>{{ Str::limit($post->body, 50) }}</p>
             <div class="post-options">

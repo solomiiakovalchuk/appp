@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <x-posts.sidebar :tags="$tags" :recentPosts="$recentPosts"/>
+                <x-posts.sidebar-more :tags="$tags" :recentPosts="$recentPosts"/>
             </div>
         </div>
     </section>

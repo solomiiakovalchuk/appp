@@ -1,6 +1,6 @@
 <div class="sidebar-item submit-comment">
     <div class="sidebar-heading">
-        <h2 id="comment-heading" style="cursor: pointer;">Leave your comment</h2>
+        <h2 id="comment-heading" style="cursor: pointer;">{{ __('post.leave_your_comment') }}</h2>
     </div>
     <div class="content" id="comment-form" style="display: none;">
         <form id="comment" method="post" action="{{ route('comments.store') }}">
@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-lg-12">
                     <fieldset>
-                        <button type="submit" id="form-submit" class="main-button">Submit</button>
+                        <button type="submit" id="form-submit" class="main-button">{{ __('post.submit') }}</button>
                     </fieldset>
                 </div>
             </div>
@@ -38,10 +38,10 @@
 
             if (commentForm.style.display === 'none') {
                 commentForm.style.display = 'block';
-                commentHeading.textContent = 'Hide comment form';
+                commentHeading.textContent = '{{ __('post.hide_comment_form') }}';
             } else {
                 commentForm.style.display = 'none';
-                commentHeading.textContent = 'Leave your comment';
+                commentHeading.textContent = '{{ __('post.leave_your_comment') }}';
             }
         }
 

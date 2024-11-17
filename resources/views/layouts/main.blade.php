@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="author" content="SolomiaKovalchuk">
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
@@ -15,6 +17,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -160,6 +164,96 @@
         };
     </script>
     <script>
+        $(document).ready(function () {
+            // Ініціалізація Select2
+            const categoryFilter = $('#categoryFilter');
+            categoryFilter.select2({
+                placeholder: '{{ __('post.select_categories') }}',
+                allowClear: true
+            });
+
+            // Обробник зміни вибору категорій
+            categoryFilter.on('change', function () {
+                const selectedCategories = $(this).val(); // Отримати вибрані категорії (масив значень)
+                filterByCategories(selectedCategories); // Викликати функцію фільтрації
+            });
+        });
+
+        // Функція для фільтрації постів
+        function filterByCategories(categories) {
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const postsContainer = document.querySelector('#postsContainer');
+
+            if (!csrfTokenMeta) {
+                console.error('CSRF token not found in meta tags');
+                return;
+            }
+
+            const csrfToken = csrfTokenMeta.getAttribute('content');
+
+            fetch(`/filter-by-categories`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ categories }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    postsContainer.innerHTML = '';
+                    if (data.posts && data.posts.length) {
+                        data.posts.forEach(post => {
+                            const postHTML = `
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    <img loading="lazy" src="${post.cover_photo_path}" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <div class="categories">
+                                        ${post.categories
+                                .map(category => `
+                                                <a href="/categories/${category.slug}">
+                                                    <span class="category-badge">${category.title}</span>
+                                                </a>
+                                            `).join('')}
+                                    </div>
+                                    <a href="/posts/${post.slug}">
+                                        <h4>${post.title}</h4>
+                                    </a>
+                                    <ul class="post-info">
+                                        <li><a href="#">${post.author ?? 'Admin'}</a></li>
+                                        <li><a href="#">${post.created_at}</a></li>
+                                        <li><a href="#">${post.comments_count} {{ __('post.comments') }}</a></li>
+                                    </ul>
+                                    <p>${post.short_description}</p>
+                                    <div class="post-options">
+                                        <ul class="post-tags">
+                                            <li><i class="fa fa-tags"></i></li>
+                                            ${post.tags
+                                .map(tag => `
+                                                    <li><a href="/tags/${tag.slug}">${tag.title}</a></li>
+                                                `).join('')}
+                                        </ul>
+                                        <a href="javascript:void(0)" class="like-button" data-post-id="${post.id}">
+                                            <i class="fa fa-heart ${post.is_liked ? 'liked' : ''}"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                            postsContainer.insertAdjacentHTML('beforeend', postHTML);
+                        });
+                    } else {
+                        postsContainer.innerHTML = '<div class="col-lg-12"><p>No posts found.</p></div>';
+                    }
+                })
+                .catch(error => console.error('Error fetching filtered posts:', error));
+        }
+
+    </script>
+    <script>
         $(document).ready(function() {
             $('.like-button').on('click', function(e) {
                 e.preventDefault();
@@ -246,6 +340,8 @@
                 .catch(error => console.error('Error fetching search results:', error));
         }
     </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
 </body>
 
 </html>

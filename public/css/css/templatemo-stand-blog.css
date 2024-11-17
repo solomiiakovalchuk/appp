@@ -78,6 +78,98 @@ h1,h2,h3,h4,h5,h6 {
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 }
+/* Стилі для контейнера Select2 */
+.select2-container {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px 12px;
+    transition: all 0.3s;
+}
+
+.select2-container--default .select2-selection--single:hover,
+.select2-container--default .select2-selection--multiple:hover {
+    border-color: #f48840;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 26px;
+    text-transform: none;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 6px;
+    transition: all 0.3s;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #f48840;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin: 2px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+.select2-container--default .select2-results__option--highlighted {
+    background-color: #f48840;
+    color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple:focus,
+.select2-container--default .select2-selection--single:focus {
+    border-color: #f48840;
+    outline: none;
+}
+
+/* Стилі для мітки */
+.category-filter label {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Стилі для контейнера Select2 у фокусі */
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--multiple:focus {
+    border-color: #f48840;
+    box-shadow: 0 0 3px rgba(244, 136, 64, 0.5);
+}
+
+/* Відступи для загального оформлення */
+.category-filter {
+    margin-top: 20px;
+}
 
 #preloader {
   overflow: hidden;

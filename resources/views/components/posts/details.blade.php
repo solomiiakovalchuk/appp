@@ -14,7 +14,7 @@
         <ul class="post-info">
             <li>{{ $post->author->name ?? 'Admin' }}</li>
             <li>{{ $post->created_at->format('d-m-Y') }}</li>
-            <li>{{ $post->comments_count }} Comments</li>
+            <li>{{ $post->comments_count }} {{ __('post.comments') }}</li>
         </ul>
         {!! $post->body !!}
         <div class="post-options">

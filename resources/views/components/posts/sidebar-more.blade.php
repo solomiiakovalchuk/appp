@@ -1,32 +1,9 @@
 @props(['tags'])
 @props(['categories'])
 @props(['recentPosts'])
-<style>
-
-</style>
 <div class="col-lg-4">
     <div class="sidebar">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="sidebar-item search">
-                    <form id="search_form" name="gs" method="GET" action="{{ route('search') }}">
-                        <input type="text" id="searchInput" name="query" class="searchText" placeholder="{{ __('post.type_to_search') }}"
-                               autocomplete="on" data-locale="{{ app()->getLocale() }}">
-
-                        <div id="searchResults" class="search-results"></div>
-                        <input type="hidden" id="requestType" name="requestType" value="api">
-
-                        <div class="category-filter">
-                            <label for="categoryFilter">{{ __('post.filter_by_categories') }}</label>
-                            <select id="categoryFilter" name="categories[]" class="form-control" multiple>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <div class="col-lg-12">
                 <div class="sidebar-item recent-posts">
                     <div class="sidebar-heading">
