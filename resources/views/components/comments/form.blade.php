@@ -5,7 +5,7 @@
     <div class="content" id="comment-form" style="display: none;">
         <form id="comment" method="post" action="{{ route('comments.store') }}">
             @csrf
-            <input type="hidden" name="post_id" value="{{ 2 }}">
+            <input type="hidden" name="post_id" value="{{ $post->id }}">
             <div class="row">
                 <div class="col-lg-12">
                     <fieldset>

@@ -9,11 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\LocaleMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
 
 Route::group(
     [
@@ -21,6 +17,11 @@ Route::group(
         'prefix' => LocaleMiddleware::getLocale(),
     ],
     function () {
+        Route::middleware('auth')->group(function () {
+            Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+            Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        });
         Route::get('/search', [PostController::class, 'search'])->name('search');
         Route::post('/filter-by-categories', [PostController::class, 'filterByCategories'])->name('filter.categories');
 

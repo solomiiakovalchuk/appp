@@ -16,7 +16,7 @@
             <li>{{ $post->created_at->format('d-m-Y') }}</li>
             <li>{{ $post->comments_count }} {{ __('post.comments') }}</li>
         </ul>
-        {!! $post->body !!}
+        {!! $post->body  !!}
         <div class="post-options">
             <ul class="post-tags">
                 <li><i class="fa fa-tags"></i></li>

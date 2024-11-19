@@ -11,6 +11,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -49,7 +50,7 @@ class CommentResource extends Resource
                     })
                     ->searchable()
                     ->required(),
-                Textarea::make('comment')
+                TextInput::make('comment')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),

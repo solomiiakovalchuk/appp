@@ -4,8 +4,11 @@ namespace App\Filament\Resources\PostResource\RelationManagers;
 
 use App\Models\Post;
 use App\Models\User;
+use Filament\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -21,22 +24,26 @@ class CommentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parent_id')
-                ->numeric(),
                 Select::make('user_id')
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
                 Select::make('post_id')
-                    ->label('Post')
-                    ->options(Post::all()->pluck('title', 'id'))
+                    ->options(function () {
+                        return Post::all()
+                            ->mapWithKeys(function ($post) {
+                                $translatedTitle = $post->getTranslation('title', app()->getLocale());
+                                return [$post->id => $translatedTitle];
+                            });
+                    })
                     ->searchable()
                     ->required(),
-                Forms\Components\Textarea::make('comment')
+                TextInput::make('comment')
                     ->required()
+                    ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_active'),
+                Toggle::make('status'),
             ]);
     }
 
@@ -44,36 +51,50 @@ class CommentsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->limit(20)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('post.title')
+                    ->label('Title')
+                    ->getStateUsing(fn($record) => $record->post->getTranslation('title', app()->getLocale())) // Отримуємо переклад назви поста
+                    ->limit(20)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('post_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean(),
+
+                Tables\Columns\TextColumn::make('comment')
+                    ->searchable()
+                    ->limit(20),
+                Tables\Columns\ToggleColumn::make('status')
+                    ->beforeStateUpdated(function ($record, $state) {
+                        $record->status = $state;
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('post_id')
+                    ->options(function () {
+                        return \App\Models\Post::all()
+                            ->mapWithKeys(function ($post) {
+                                $translatedTitle = $post->getTranslation('title', app()->getLocale());
+                                return [$post->id => $translatedTitle];
+                            });
+                    })
+                    ->searchable(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

@@ -170,9 +170,37 @@ class PostController extends Controller
             'comments' => fn($query) => $query->where('status', true),
             'comments.user'
         ]);
+        $post->setTranslation('body', 'en', $this->convertEditorContentToHtml($post->body));
         return view('posts.show', [
             'post' => $post,
         ]);
+    }
+    protected function convertEditorContentToHtml($content): string
+    {
+        if (is_array($content)) {
+            return $this->parseRichText($content);
+        }
+        return $content;
+    }
+    protected function parseRichText(array $content): string
+    {
+        $html = '';
+
+        foreach ($content['content'] as $block) {
+            if ($block['type'] === 'paragraph') {
+                $paragraphText = '';
+
+                foreach ($block['content'] ?? [] as $innerContent) {
+                    if ($innerContent['type'] === 'text') {
+                        $paragraphText .= $innerContent['text'];
+                    }
+                }
+
+                $html .= "<p>{$paragraphText}</p>";
+            }
+        }
+
+        return $html;
     }
 
     public function like(Request $request, Post $post)

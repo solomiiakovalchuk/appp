@@ -44,6 +44,7 @@ class Post extends Model
         'scheduled_for' => 'datetime',
         'status' => 'boolean',
         'user_id' => 'integer',
+        'body' => 'array',
     ];
 
     public function category()
