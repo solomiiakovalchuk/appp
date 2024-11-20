@@ -3,6 +3,7 @@ return [
     'author' => 'Автор',
     'admin' => 'Адмін',
     'comments' => 'Коментарі',
+    'comments1' => 'Коментарів',
     'leave_your_comment' => 'Залиште коментар',
     'hide_comment_form' => 'Сховати форму коментарів',
     'tags' => 'Теги',
@@ -16,6 +17,8 @@ return [
     'select_categories' => 'Оберіть категорії',
     'view_all_posts' => 'Переглянути усі',
     'filter_by_categories' => 'Фільтрувати за категоріями:',
+    'categoryFilter' => 'Результати пошуку за категорією: ',
+    'tagFilter' => 'Результати пошуку за тегом: '
 ];
 
 ?>

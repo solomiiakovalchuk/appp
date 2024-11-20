@@ -16,7 +16,7 @@
             <li>{{ $post->created_at->format('d-m-Y') }}</li>
             <li>{{ $post->comments_count }} {{ __('post.comments') }}</li>
         </ul>
-        {!! $post->body  !!}
+        {!! isset($post->body['content']) ? extractText($post->body['content']) : $post->body !!}
         <div class="post-options">
             <ul class="post-tags">
                 <li><i class="fa fa-tags"></i></li>
@@ -30,3 +30,20 @@
         </div>
     </div>
 </div>
+<?php 
+function extractText($content) {
+    $text = '';
+
+    foreach ($content as $item) {
+        if (isset($item['text'])) {
+            $text .= $item['text']; // Додаємо текст
+        }
+        if (isset($item['content']) && is_array($item['content'])) {
+            $text .= extractText($item['content']); // Рекурсія для вкладеного контенту
+        }
+    }
+
+    return $text;
+}
+
+?>

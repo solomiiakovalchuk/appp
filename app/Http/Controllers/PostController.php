@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $posts = Post::query()->with(['categories', 'user', 'tags'])->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(3);
         $slider_posts = Post::where('visible_on_slider', 1)->get();
         $recentPosts = Post::latest()->take(4)->get();
         $tags = Tag::get();
@@ -44,13 +44,13 @@ class PostController extends Controller
         if ($category) {
             $posts = Post::whereHas('categories', fn($query) => $query->where('slug', $category->slug))
                 ->with(['categories', 'user', 'tags'])->orderBy('created_at', 'desc')
-                ->paginate(10);
-            $filterTitle = 'Category: ' . $category->title;
+                ->paginate(5);
+            $filterTitle = __('post.categoryFilter')  . $category->title;
         } elseif ($tag) {
             $posts = Post::whereHas('tags', fn($query) => $query->where('slug', $tag->slug))
                 ->with(['categories', 'user', 'tags'])->orderBy('created_at', 'desc')
                 ->paginate(10);
-            $filterTitle = 'Tag: ' . $tag->title;
+            $filterTitle = __('post.tagFilter')  . $tag->title;
         } else {
             $posts = Post::with(['categories', 'user', 'tags'])->orderBy('created_at', 'desc')->paginate(10);
             $filterTitle = null;

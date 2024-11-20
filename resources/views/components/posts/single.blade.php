@@ -19,7 +19,7 @@
             <ul class="post-info">
                 <li><a href="#">{{ $post->author ?? __('post.admin') }}</a></li>
                 <li><a href="#">{{ $post->created_at->format('F d, Y') }}</a></li>
-                <li><a href="#">{{ $post->comments->count() }} {{ __('post.comments') }}</a></li>
+                <li><a href="#">{{ $post->comments->count() }} {{ __('post.comments1') }}</a></li>
             </ul>
 
             <p>{{ $post->short_description }}</p>

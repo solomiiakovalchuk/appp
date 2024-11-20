@@ -1,6 +1,6 @@
 <div class="sidebar-item comments">
     <div class="sidebar-heading">
-        <h2>{{ $comments->count() }} comments</h2>
+        <h2>{{ $comments->count(). " ". __('post.comments1')}}  </h2>
     </div>
         <ul>
             @foreach ($comments as $comment)

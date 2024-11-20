@@ -1279,3 +1279,41 @@ footer p a:hover {
 		margin-top: 60px;
 	}
 }
+.main-banner .item-content {
+    position: relative;
+    color: #fff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8); /* Add shadow for better readability */
+}
+
+.main-banner .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 1; /* Ensure it's behind the text */
+}
+
+.main-banner .main-content {
+    position: relative;
+    z-index: 2; /* Bring the text in front of the overlay */
+}
+
+.main-banner .main-content h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    line-height: 1.2;
+}
+
+.main-banner .post-info a {
+    color: #fff;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.main-banner .post-info a:hover {
+    color: #ccc; /* Light gray on hover */
+}

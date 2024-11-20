@@ -58,9 +58,6 @@
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">{{ __('messages.about') }}</a>
-                        </li>
                         @auth
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route(name: 'profile.edit') }}">{{ __('messages.account') }}</a>
@@ -91,8 +88,8 @@
                             </form>
                         @endauth
                         <li class="nav-item">
-                            @if (app()->getLocale() === 'uk')
-                                <a class="nav-link" href="{{ route('change-locale', 'en') }}">
+                            @if (app()->getLocale() === 'en')
+                                <a class="nav-link" href="{{ route('change-locale', 'uk') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                         <path
@@ -110,7 +107,7 @@
                                     </svg>
                                 </a>
                             @else
-                                <a class="nav-link" href="{{ route('change-locale', 'uk') }}">
+                                <a class="nav-link" href="{{ route('change-locale', 'en') }}">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path

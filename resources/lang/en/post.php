@@ -3,6 +3,7 @@ return [
     'author' => 'Author',
     'admin' => 'Admin',
     'comments' => 'Comments',
+    'comments1' => 'Comments',
     'tags' => 'Tags',
     'like' => 'Like',
     'submit' => 'Submit',
@@ -16,5 +17,7 @@ return [
     'filter_by_categories' => 'Filter by Categories:',
     'leave_your_comment' => 'Leave your comment',
     'hide_comment_form' => 'Hide comment form',
+    'categoryFilter' => 'Search results for category: ',
+    'tagFilter' => 'Search results for tag: '
 ];
 ?>

@@ -11,10 +11,9 @@
                 <h4>{{ $post->title }}</h4>
             </a>
             <ul class="post-info">
-                <li><a href="#">{{ $post->author->name ?? 'Admin' }}</a></li>
+                <li><a href="#">{{ $post->author->name ?? 'Solomiia' }}</a></li>
                 <li><a href="#">{{ $post->created_at->format('d-m-Y') }}</a></li>
             </ul>
-            <p>{{ Str::limit($post->body, 50) }}</p>
             <div class="post-options">
                 <ul class="post-tags">
                     <li><i class="fa fa-tags"></i></li>
