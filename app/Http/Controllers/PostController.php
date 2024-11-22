@@ -130,23 +130,24 @@ class PostController extends Controller
         }
 
         $posts = $postsQuery->paginate(10);
+        $locale = session('locale', app()->getLocale());
 
-        $data = $posts->map(function ($post) {
+        $data = $posts->map(function ($post) use ($locale) {
             return [
                 'id' => $post->id,
-                'title' => $post->title,
+                'title' => $post->getTranslation('title', $locale),
                 'slug' => $post->slug,
                 'cover_photo_path' => asset('storage/' . $post->cover_photo_path),
                 'author' => $post->user->name,
                 'created_at' => $post->created_at->format('F d, Y'),
-                'short_description' => $post->short_description,
-                'categories' => $post->categories->map(function ($category) {
+                'short_description' => $post->getTranslation('short_description', $locale),
+                'categories' => $post->categories->map(function ($category) use ($locale) {
                     return [
                         'title' => $category->title,
                         'slug' => $category->slug,
                     ];
                 }),
-                'tags' => $post->tags->map(function ($tag) {
+                'tags' => $post->tags->map(function ($tag) use ($locale) {
                     return [
                         'title' => $tag->title,
                         'slug' => $tag->slug,
